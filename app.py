@@ -4,7 +4,8 @@ from utilities import generate_certificate
 
 CSV_FILE = "test.csv"
 
-st.title("Winter School Certificate 2026")
+st.title("CHPC Winter School 2026")
+st.subheader("Download certificate")
 
 # Load CSV
 df = pd.read_csv(CSV_FILE)
