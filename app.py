@@ -9,19 +9,24 @@ st.title("Winter School Certificate 2026")
 # Load CSV
 df = pd.read_csv(CSV_FILE)
 
-# Initialize session state
+# --- Session state ---
 if "verified_record" not in st.session_state:
     st.session_state.verified_record = None
+if "name_for_certificate" not in st.session_state:
+    st.session_state.name_for_certificate = ""
 
-# --- FORM ---
-with st.form("certificate_form"):
-    email_input = st.text_input("Email address:")
-    name_input = st.text_input("Enter First Name or Surname:")
-    submit_search = st.form_submit_button("Verify Record")
+# --- Instruction ---
+st.info(
+    "Enter the **email registered with for Winter School**.  \n"
+    "NB: Both email and surname must match to verify."
+)
 
-# --- VERIFY ---
-if submit_search:
 
+# --- Verify Section ---
+email_input = st.text_input("Email address (registered):",placeholder="joedoe@example.com")
+name_input = st.text_input("First Name or Surname (registered):",placeholder="John or Doe")
+
+if st.button("Verify Record"):
     email_norm = email_input.strip().lower()
     name_norm = name_input.strip().lower()
 
@@ -35,29 +40,34 @@ if submit_search:
 
     if not matches.empty:
         st.session_state.verified_record = matches.iloc[0]
+        st.session_state.name_for_certificate = f"{matches.iloc[0]['first_name']} {matches.iloc[0]['surname']}"
         st.success("Record verified ✅")
     else:
-        st.error("No matching record found.")
+        st.session_state.verified_record = None
+        st.error("No matching record found. Make sure both email and surname match.")
 
-# --- AFTER VERIFICATION ---
-if st.session_state.verified_record is not None:
+# --- Certificate Section ---
+name_for_certificate = st.text_input(
+    "Name to appear on certificate:",
+    value=st.session_state.name_for_certificate,
+    disabled=(st.session_state.verified_record is None)
+)
 
-    record = st.session_state.verified_record
-    full_name_default = f"{record['first_name']} {record['surname']}"
+if st.button("Generate Certificate", disabled=(st.session_state.verified_record is None)):
+    pdf_bytes, date_str, serial = generate_certificate(name_for_certificate)
+    st.success(f"Certificate ready! Date: {date_str}, Serial: {serial}")
 
-    name_for_certificate = st.text_input(
-        "Name to appear on certificate:",
-        value=full_name_default
+    st.download_button(
+        label="Download Certificate",
+        data=pdf_bytes,
+        file_name=f"{name_for_certificate}_certificate.pdf",
+        mime="application/pdf"
     )
 
-    if st.button("Generate Certificate"):
-        pdf_bytes, date_str, serial = generate_certificate(name_for_certificate)
-
-        st.success(f"Certificate ready! Date: {date_str}, Serial: {serial}")
-
-        st.download_button(
-            label="Download Certificate",
-            data=pdf_bytes,
-            file_name=f"{name_for_certificate}_certificate.pdf",
-            mime="application/pdf"
-        )
+# --- Footer / Acknowledgment ---
+st.markdown(
+    """
+    ---
+    Powered by Streamlit • Simplified Version
+    """,
+)
