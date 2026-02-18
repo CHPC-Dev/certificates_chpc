@@ -27,7 +27,7 @@ st.info(
 email_input = st.text_input("Email address (registered):",placeholder="joedoe@example.com")
 name_input = st.text_input("First Name or Surname (registered):",placeholder="John or Doe")
 
-if st.button("Verify Record"):
+if st.button("Verify"):
     email_norm = email_input.strip().lower()
     name_norm = name_input.strip().lower()
 
@@ -42,7 +42,7 @@ if st.button("Verify Record"):
     if not matches.empty:
         st.session_state.verified_record = matches.iloc[0]
         st.session_state.name_for_certificate = f"{matches.iloc[0]['first_name']} {matches.iloc[0]['surname']}"
-        st.success("Record verified ✅")
+        st.success("Eligible for certification")
     else:
         st.session_state.verified_record = None
         st.error("No matching record found. Make sure both email and surname match.")
