@@ -37,12 +37,12 @@ Built with **Python**, **Streamlit**, and **Pillow**, the app verifies users aga
 
 To test the app, the repo contains a **`test.csv`** file as an example. It should include the following columns:
 
-> **Note:** The app is deployed on Streamlit Cloud and publicly accessible.  
-> The repo includes the CSV for testing, but ensure any CSV you upload or use only contains publicly shareable information (to comply with privacy rules, e.g., POPIA).
-
 - `first_name`
 - `surname`
 - `email`
+
+> **Note:** The app is deployed on Streamlit Cloud and publicly accessible.  
+> The repo includes the CSV for testing, but ensure any CSV you upload or use only contains publicly shareable information (to comply with privacy rules, e.g., POPIA).
 
 Example:
 [Open the live app](https://share.streamlit.io/<your-username>/<your-repo>/main/app.py)
