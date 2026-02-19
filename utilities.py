@@ -51,6 +51,7 @@ def generate_certificate(full_name):
    # --- Serial ---
     serial_number = f"CHPC-2026-{str(uuid.uuid4())[:8].upper()}"
     serial_text = f"{serial_number}"
+    serial_color = (80, 1, 24)
 
     bbox_serial = draw.textbbox((0, 0), serial_text, font=font_serial)
     text_width3 = bbox_serial[2] - bbox_serial[0]
@@ -58,7 +59,7 @@ def generate_certificate(full_name):
     x_serial = coords_serial[0] - text_width3 / 2
     y_serial = coords_serial[1] - text_height3 / 2
 
-    draw.text((x_serial, y_serial), serial_text, fill=(40, 40, 40), font=font_serial)
+    draw.text((x_serial, y_serial), serial_text, fill=serial_number, font=font_serial)
 
     # Save PDF to memory
     buffer = BytesIO()
