@@ -40,13 +40,13 @@ def generate_certificate(full_name):
     draw.text((x_name, y_name), full_name, fill=(0, 0, 0), font=font_name)
 
     # --- Date ---
-    today = datetime.datetime.now().strftime("%B %Y")
-    bbox_date = draw.textbbox((0, 0), today, font=font_date)
+    period = "28 July to 8 August 2025"
+    bbox_date = draw.textbbox((0, 0), period, font=font_date)
     text_width2 = bbox_date[2] - bbox_date[0]
     text_height2 = bbox_date[3] - bbox_date[1]
     x_date = coords_date[0] - text_width2 / 2
     y_date = coords_date[1] - text_height2 / 2
-    draw.text((x_date, y_date), today, fill=(0, 0, 0), font=font_date)
+    draw.text((x_date, y_date), period, fill=(0, 0, 0), font=font_date)
 
    # --- Serial ---
     serial_number = f"CHPC-2026-{str(uuid.uuid4())[:8].upper()}"
@@ -65,4 +65,4 @@ def generate_certificate(full_name):
     img.save(buffer, format="PDF", resolution=100.0)
     buffer.seek(0)
 
-    return buffer.getvalue(), today, serial_number
+    return buffer.getvalue(), period, serial_number
