@@ -2,10 +2,14 @@ import streamlit as st
 import pandas as pd
 from utilities import generate_certificate
 
+st.set_page_config(
+    page_title="Certificate",
+    page_icon="🎓"  
+)
+
 CSV_FILE = "test.csv"
 
-st.title("CHPC Winter School 2026")
-# st.subheader("Download certificate")
+st.title("Winter School Certificate 2026")
 
 # Load CSV
 df = pd.read_csv(CSV_FILE)
@@ -27,7 +31,7 @@ st.info(
 email_input = st.text_input("Email address (registered):",placeholder="joedoe@example.com")
 name_input = st.text_input("First Name or Surname (registered):",placeholder="John or Doe")
 
-if st.button("Verify"):
+if st.button("Verify Record"):
     email_norm = email_input.strip().lower()
     name_norm = name_input.strip().lower()
 
@@ -42,7 +46,7 @@ if st.button("Verify"):
     if not matches.empty:
         st.session_state.verified_record = matches.iloc[0]
         st.session_state.name_for_certificate = f"{matches.iloc[0]['first_name']} {matches.iloc[0]['surname']}"
-        st.success("Eligible for certification")
+        st.success("Record verified ✅")
     else:
         st.session_state.verified_record = None
         st.error("No matching record found. Make sure both email and surname match.")
